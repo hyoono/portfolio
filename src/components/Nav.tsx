@@ -70,6 +70,10 @@ export default function Nav() {
     setShowLegacySignal(true);
 
     void import("../xp/XPExperience");
+    void import("../xp/preloadXPAssets").then(({ preloadXPAssets }) => {
+      preloadXPAssets();
+    });
+
     const fullscreenRequest = document.documentElement.requestFullscreen?.();
     fullscreenRequest?.catch(() => {});
 
