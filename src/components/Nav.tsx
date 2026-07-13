@@ -130,14 +130,15 @@ export default function Nav() {
       aria-label="Main navigation"
     >
       <div className="section-container flex items-center justify-between h-16 md:h-20">
-        {/* Logo / Initials */}
+        {/* Brand */}
         <Link
           to="/"
-          className="font-display text-2xl md:text-3xl font-bold hover:opacity-100"
+          className="nav-brand hover:opacity-100"
           id="nav-logo"
+          aria-label="hyoono home"
         >
-          <span className="text-accent">J</span>
-          <span className="text-text-primary">FE</span>
+          <span className="nav-brand-glyph" aria-hidden="true">h&gt;</span>
+          <span className="nav-brand-name">hyoono</span>
         </Link>
 
         {/* Desktop Nav Links */}

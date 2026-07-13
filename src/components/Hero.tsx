@@ -95,7 +95,7 @@ export default function Hero() {
 
         <aside className="bios-panel fade-in" aria-label="System diagnostics">
           <div className="bios-panel-header">
-            <span>JFE BIOS</span>
+            <span>h&gt; bios</span>
             <span>v2.6</span>
           </div>
 

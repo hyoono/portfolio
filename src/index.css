@@ -190,6 +190,78 @@ a:hover {
   white-space: nowrap;
 }
 
+/* Navigation brand */
+.nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.nav-brand-glyph {
+  display: inline-grid;
+  place-items: center;
+  min-width: 40px;
+  height: 32px;
+  padding-inline: 8px;
+  border: 1px solid color-mix(in srgb, var(--accent) 44%, var(--border-hairline));
+  border-radius: 6px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent),
+    var(--bg-surface);
+  color: var(--accent);
+  box-shadow: var(--shadow-raised);
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.nav-brand-name {
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+@media (max-width: 480px) {
+  .nav-brand-name {
+    display: none;
+  }
+}
+
+/* Certificate cards */
+.cert-preview-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--border-hairline);
+  border-radius: 6px;
+  background: var(--bg-surface-alt);
+}
+
+.cert-preview-image,
+.cert-pdf-preview {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 6px;
+}
+
+.cert-preview-image {
+  object-fit: contain;
+  padding: 0.75rem;
+}
+
+.cert-pdf-preview {
+  pointer-events: none;
+  background: #f7f8fb;
+}
+
 /* BIOS / operations motif */
 .bios-hero {
   background-color: var(--bg-base);

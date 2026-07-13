@@ -1,5 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#0E1117"/>
-  <text x="5" y="23" font-family="Georgia, serif" font-size="18" font-weight="700" fill="#4FD1A5">J</text>
-  <text x="14" y="23" font-family="Georgia, serif" font-size="14" font-weight="700" fill="#E6E8EB">FE</text>
+  <rect width="32" height="32" rx="7" fill="#0B0F14"/>
+  <path d="M5 8.5h22M5 23.5h22M8.5 5v22M23.5 5v22" stroke="#1A222E" stroke-width="1"/>
+  <text x="6" y="21.5" font-family="Consolas, 'JetBrains Mono', monospace" font-size="13" font-weight="700" fill="#4FD1A5">h&gt;</text>
+  <rect x="23" y="10" width="2" height="12" rx="1" fill="#E6E8EB"/>
 </svg>
