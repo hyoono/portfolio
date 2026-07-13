@@ -2,14 +2,10 @@
   "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": [
-      "/assets/*.{js,css,json,ico,png,svg,jpg,jpeg,gif,webp,avif,woff,woff2,ttf,eot,map}",
+      "/assets/*",
       "/documents/*",
       "/portfolio-assets/*",
-      "/portfolio-assets/*/*",
-      "/portfolio-assets/*/*/*",
       "/xp-assets/*",
-      "/xp-assets/*/*",
-      "/xp-assets/*/*/*",
       "/*.{js,css,json,ico,png,svg,jpg,jpeg,gif,webp,avif,txt,xml,webmanifest,pdf,mp3,wav}"
     ]
   },
