@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>3D Pinball for Windows - Space Cadet</title>
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: #000;
+        color: #c0c0c0;
+        font-family: Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 11px;
+      }
+
+      body {
+        display: flex;
+      }
+
+      #game-shell {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        background: #000;
+      }
+
+      #status-panel {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #000;
+      }
+
+      #status-panel.is-hidden {
+        display: none;
+      }
+
+      #status-box {
+        min-width: 220px;
+        max-width: calc(100% - 32px);
+        padding: 12px 14px;
+        color: #000;
+        background: #ece9d8;
+        border: 2px solid;
+        border-color: #fff #404040 #404040 #fff;
+        box-shadow: 1px 1px 0 #000;
+      }
+
+      #status-panel.is-error #status-box {
+        color: #7f0000;
+      }
+
+      #status-text {
+        margin-bottom: 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      #progress {
+        width: 100%;
+        height: 13px;
+      }
+
+      canvas.emscripten {
+        position: relative;
+        z-index: 1;
+        display: block;
+        max-width: 100%;
+        max-height: 100%;
+        background: #000;
+        border: 0;
+        outline: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game-shell">
+      <div id="status-panel">
+        <div id="status-box">
+          <div id="status-text">Downloading...</div>
+          <progress id="progress" max="100" value="0" hidden></progress>
+        </div>
+      </div>
+      <canvas
+        class="emscripten"
+        id="canvas"
+        oncontextmenu="event.preventDefault()"
+        tabindex="-1"
+      ></canvas>
+    </div>
+
+    <script>
+      (function () {
+        var ASSET_BASE = "https://pinball.alula.me/";
+        var shell = document.getElementById("game-shell");
+        var canvas = document.getElementById("canvas");
+        var statusPanel = document.getElementById("status-panel");
+        var statusText = document.getElementById("status-text");
+        var progress = document.getElementById("progress");
+        var fitQueued = false;
+        var hasShownCanvas = false;
+
+        function revealCanvas() {
+          hasShownCanvas = true;
+          fitCanvas();
+        }
+
+        function fitCanvas() {
+          if (fitQueued) return;
+          fitQueued = true;
+          window.requestAnimationFrame(function () {
+            fitQueued = false;
+            if (!canvas.width || !canvas.height || !shell.clientWidth || !shell.clientHeight) return;
+
+            var scale = Math.min(
+              shell.clientWidth / canvas.width,
+              shell.clientHeight / canvas.height
+            );
+            var width = Math.max(1, Math.floor(canvas.width * scale));
+            var height = Math.max(1, Math.floor(canvas.height * scale));
+            var widthValue = width + "px";
+            var heightValue = height + "px";
+
+            if (canvas.style.width !== widthValue) {
+              canvas.style.setProperty("width", widthValue, "important");
+            }
+            if (canvas.style.height !== heightValue) {
+              canvas.style.setProperty("height", heightValue, "important");
+            }
+          });
+        }
+
+        function showStatus(text) {
+          statusText.textContent = text || "";
+          statusPanel.classList.toggle("is-hidden", !text);
+          if (!text) {
+            revealCanvas();
+            setTimeout(function () {
+              canvas.focus();
+            }, 0);
+          }
+        }
+
+        function updateProgress(text) {
+          var match = text.match(/([^(]+)\((\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)\)/);
+          if (!match) {
+            progress.hidden = true;
+            revealCanvas();
+            return;
+          }
+
+          statusText.textContent = match[1].trim();
+          progress.hidden = false;
+          progress.value = Number(match[2]);
+          progress.max = Number(match[3]);
+        }
+
+        var observer = new MutationObserver(fitCanvas);
+        observer.observe(canvas, {
+          attributes: true,
+          attributeFilter: ["height", "style", "width"],
+        });
+        window.addEventListener("resize", fitCanvas);
+
+        window.Module = {
+          preRun: [],
+          postRun: [fitCanvas],
+          locateFile: function (path) {
+            return ASSET_BASE + path;
+          },
+          print: function () {
+            return function (text) {
+              if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(" ");
+              console.log(text);
+            };
+          }(),
+          printErr: function (text) {
+            if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(" ");
+            console.error(text);
+          },
+          canvas: canvas,
+          setStatus: function (text) {
+            if (!text) {
+              progress.hidden = true;
+              showStatus("");
+              return;
+            }
+
+            showStatus(text);
+            updateProgress(text);
+          },
+          totalDependencies: 0,
+          monitorRunDependencies: function (left) {
+            this.totalDependencies = Math.max(this.totalDependencies, left);
+            Module.setStatus(
+              left
+                ? "Preparing... (" + (this.totalDependencies - left) + "/" + this.totalDependencies + ")"
+                : "All downloads complete."
+            );
+          },
+        };
+
+        Module.setStatus("Downloading...");
+
+        var warmup = window.setInterval(function () {
+          fitCanvas();
+          if (hasShownCanvas) {
+            window.clearInterval(warmup);
+          }
+        }, 250);
+
+        window.onerror = function () {
+          progress.hidden = true;
+          statusPanel.classList.remove("is-hidden");
+          statusPanel.classList.add("is-error");
+          statusText.textContent = "Unable to start 3D Pinball.";
+          Module.setStatus = function (text) {
+            if (text) Module.printErr("[post-exception status] " + text);
+          };
+        };
+      }());
+    </script>
+    <script
+      async
+      crossorigin="anonymous"
+      src="https://pinball.alula.me/SpaceCadetPinball.js"
+    ></script>
+  </body>
+</html>
