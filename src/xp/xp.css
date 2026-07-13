@@ -590,27 +590,75 @@
 .xp-start-menu-footer {
   display: flex;
   justify-content: flex-end;
-  gap: 4px;
-  padding: 6px 10px;
-  background: linear-gradient(180deg, #3168d5 0%, #1941a5 100%);
-  border-top: 1px solid #0d2f82;
+  align-items: center;
+  gap: 8px;
+  min-height: 39px;
+  padding: 6px 9px 7px;
+  background:
+    linear-gradient(180deg, rgba(77, 133, 226, 0.95) 0%, rgba(38, 87, 197, 0.95) 18%, rgba(27, 73, 174, 0.98) 100%);
+  border-top: 1px solid #3c77dc;
 }
 
-.xp-start-menu-footer button {
+.xp-start-menu-footer .xp-start-menu-power-action {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 3px 14px;
-  background: linear-gradient(180deg, #f0f0f0 0%, #d4d4d4 100%);
-  border: 1px solid #808080;
-  border-radius: 3px;
+  gap: 5px;
+  min-height: 24px;
+  padding: 2px 6px 2px 5px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background: transparent;
+  color: #fff;
   font-size: 11px;
+  font-weight: bold;
+  line-height: 1;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.45);
   cursor: pointer;
   font-family: "Tahoma", sans-serif;
 }
 
-.xp-start-menu-footer button:hover {
-  background: linear-gradient(180deg, #fff 0%, #e0e0e0 100%);
+.xp-start-menu-footer .xp-start-menu-power-action:hover {
+  border-color: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.xp-start-menu-footer .xp-start-menu-power-action:active {
+  background: rgba(0, 24, 100, 0.18);
+  transform: translateY(1px);
+}
+
+.xp-start-menu-power-icon {
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border-radius: 4px;
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.55),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+}
+
+.xp-start-menu-power-icon img {
+  width: 17px;
+  height: 17px;
+  object-fit: contain;
+}
+
+.xp-start-menu-logoff-icon {
+  background: linear-gradient(135deg, #f7d55b 0%, #e49023 58%, #b86414 100%);
+}
+
+.xp-start-menu-logoff-icon img {
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.3));
+}
+
+.xp-start-menu-shutdown-icon {
+  background: linear-gradient(135deg, #ffb26a 0%, #e85531 55%, #a92a1b 100%);
+}
+
+.xp-start-menu-shutdown-icon img {
+  filter: saturate(1.4) drop-shadow(0 1px 0 rgba(255, 255, 255, 0.25));
 }
 
 /* ═══════════════════════════════════════

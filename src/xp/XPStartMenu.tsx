@@ -12,6 +12,7 @@ export default function XPStartMenu({
   onOpenWindow,
   onShutDown,
   onClose,
+  onSwitchToModern,
 }: Props) {
   const handleItemClick = (id: string) => {
     const icon = desktopIcons.find((i) => i.id === id);
@@ -140,12 +141,29 @@ export default function XPStartMenu({
       {/* Footer */}
       <div className="xp-start-menu-footer">
         <button
+          type="button"
+          className="xp-start-menu-power-action"
+          onClick={() => {
+            onClose();
+            onSwitchToModern();
+          }}
+        >
+          <span className="xp-start-menu-power-icon xp-start-menu-logoff-icon">
+            <img src="/xp-assets/icons/users.png" alt="" />
+          </span>
+          Log Off
+        </button>
+        <button
+          type="button"
+          className="xp-start-menu-power-action"
           onClick={() => {
             onClose();
             onShutDown();
           }}
         >
-          <img src="/xp-assets/icons/shutdown.png" alt="" style={{ width: 16, height: 16 }} />
+          <span className="xp-start-menu-power-icon xp-start-menu-shutdown-icon">
+            <img src="/xp-assets/icons/shutdown.png" alt="" />
+          </span>
           Turn Off Computer
         </button>
       </div>
